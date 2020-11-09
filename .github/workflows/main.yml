@@ -1,0 +1,17 @@
+on: [push] #trigger to any push (not only to master)
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+    - name: checkout # in order to the repository to be copied to the runners temporary filespace and therefore allowing the runner to lead the action.yaml file. What this does ? It accesses the built-in variable call $GITHUB_WORKSPACE which is a temporary directory, that the runner can access and store any data
+      uses: actions/checkout@v2
+    - name: Hello world action step
+      id: hello
+      uses: ./ # actions/javascript-actions@v1 # action we created
+      with:
+        who-to-greet: 'Samir M'
+    # Use the output from the `hello` step
+    - name: Get the output time
+      run: echo "The time was ${{ steps.hello.outputs.time }}"
